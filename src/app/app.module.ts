@@ -12,6 +12,7 @@ import { EventDetailsComponent } from './events/event-details/event-details.comp
 import { appRoutes } from './routes';
 import { Error404Component } from './errors/404.component';
 import { EventRouteActivatorService } from './events/event-details/event-route-activator.service';
+import { CreateEventComponent } from './events/create-event.component';
 
 @NgModule({
   imports: [
@@ -24,13 +25,25 @@ import { EventRouteActivatorService } from './events/event-details/event-route-a
     EventThumbnailComponent,
     NavBarcomponent,
     EventDetailsComponent,
+    CreateEventComponent,
     Error404Component
   ],
   providers: [
     EventService,
     ToastrService,
-    EventRouteActivatorService
+    EventRouteActivatorService,
+    {
+      provide: 'canDeactivateCreateEvent',
+      useValue: checkUnsavedState
+    }
   ],
   bootstrap: [EventsAppComponent]
 })
 export class AppModule { }
+
+export function checkUnsavedState(component:CreateEventComponent){
+
+  if(!component.isDataSaved)
+    return window.confirm('You have unsaved work, do you want to disregard?')
+  return true
+}
