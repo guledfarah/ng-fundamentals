@@ -1,29 +1,49 @@
 <div class="container">
-    <img (click)="handleThumbnailClick(event.name)" [src]="event?.imageUrl" [alt]="event?.name" class="event-image img-responsive">
-  
-    <div class="row">
-      <div class="col-md-11">
-        <h2>{{event?.name}} </h2>
-      </div>
-    </div>
-  
-    <div class="row">
-      <div class="col-md-6">
-        <div><strong>Date:</strong> {{event?.date}}</div>
-        <div><strong>Time:</strong> {{event?.time}}</div>
-        <div><strong>Price:</strong> ${{event?.price}}</div>
-      </div>
-      <div class="col-md-6">
-        <address *ngIf="event?.location">
-          <strong>Address:</strong><br />
-          {{event?.location?.address}}<br />
-          {{event?.location?.city}}, {{event?.location?.country}}
-        </address>
-        <address *ngIf="event?.onlineUrl">
-          <strong>Url:</strong><br />
-          {{event?.onlineUrl}}
-        </address>
-      </div>
+  <img (click)="handleThumbnailClick(event.name)" [src]="event?.imageUrl" [alt]="event?.name"
+    class="event-image img-responsive">
+
+  <div class="row">
+    <div class="col-md-11">
+      <h2>{{event?.name | titlecase}} </h2>
     </div>
   </div>
-  
+
+  <div class="row">
+    <div class="col-md-6">
+      <div><strong>Date:</strong> {{event?.date | date:'shortDate'}}</div>
+      <div><strong>Time:</strong> {{event?.time}}</div>
+      <div><strong>Price:</strong> {{event?.price | currency:'USD'}}</div>
+    </div>
+    <div class="col-md-6">
+      <address *ngIf="event?.location">
+        <strong>Address:</strong><br />
+        {{event?.location?.address}}<br />
+        {{event?.location?.city}}, {{event?.location?.country}}
+      </address>
+      <address *ngIf="event?.onlineUrl">
+        <strong>Url:</strong><br />
+        {{event?.onlineUrl}}
+      </address>
+    </div>
+  </div>
+
+  <hr>
+  <div class="row">
+    <div class="col-md-2">
+      <h3 style="margin:0;">Sessions</h3>
+    </div>
+
+    <div class="col-md-2 offset-md-8 add-session-link">
+      <a (click)="addSession()">Add Session</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- If toggle is not in Add-Mode, display all session  -->
+      <session-list *ngIf="!isInAddMode" [sessions]="event?.sessions"></session-list>
+      <!-- Otherwise, display Create session form -->
+      <create-session *ngIf="isInAddMode" (saveNewSessionEventEmitter)="saveNewSession($event)" (cancelNewSessionEventEmitter)="cancelNewSession()"></create-session>
+    </div>
+  </div>
+</div>

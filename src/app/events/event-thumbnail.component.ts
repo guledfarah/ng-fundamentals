@@ -4,13 +4,13 @@ import { IEvent } from ".";
 @Component({
     selector: 'event-thumbnail',
     template: `
-<div [routerLink]="['/event', event.id]" class="well hoverwell thumbnail">
+<div [routerLink]="['/events', event.id]" class="well hoverwell thumbnail">
 
-<h2>{{event?.name}} </h2>
+<h2>{{event?.name | titlecase}} </h2>
 
-<div>Date:{{event?.date}}</div>
+<div>Date: {{event?.date | date:'shortDate'}}</div>
 <div>Time: {{event?.time}}</div>
-<div>Price: \${{event?.price}}</div>
+<div>Price: {{event?.price | currency:'USD'}}</div>
 
 
 <div *ngIf="event?.location">
